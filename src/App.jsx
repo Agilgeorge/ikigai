@@ -1,13 +1,13 @@
 import React from 'react';
-import Authpage from './Authpage';
+import './App.css'; 
+import AuthPage from './Authpage'; 
 
-export const App = () => {
+function App() {
   return (
-    <div>
-      <Authpage />
-      
+    <div className="App">
+      <AuthPage />
     </div>
   );
-};
+}
 
-export default App; 
+export default App;
