@@ -31,11 +31,16 @@ const AuthPage = () => {
     }
   };
 
-  // Function to handle sign-in form submission (placeholder)
+  // Function to handle sign-in form submission
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    // Add login functionality here
-    console.log('Login form submitted');
+    try {
+      const response = await axios.post('http://localhost:5000/login', formData);
+      alert(response.data.msg);
+    } catch (err) {
+      console.error(err);
+      alert('Error logging in');
+    }
   };
 
   // Toggle functions to switch between sign-up and sign-in
