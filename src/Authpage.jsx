@@ -1,4 +1,6 @@
+
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -10,6 +12,8 @@ const AuthPage = () => {
     email: '',
     password: ''
   });
+
+  const navigate = useNavigate(); // Hook for navigation
 
   // Function to handle input changes and update form data
   const handleChange = (e) => {
@@ -25,6 +29,9 @@ const AuthPage = () => {
     try {
       const response = await axios.post('http://localhost:5000/register', formData);
       alert(response.data.msg);
+      if (response.status === 200) {
+        navigate('/home'); // Redirect to Home on successful registration
+      }
     } catch (err) {
       console.error(err);
       alert('Error registering user');
@@ -37,6 +44,9 @@ const AuthPage = () => {
     try {
       const response = await axios.post('http://localhost:5000/login', formData);
       alert(response.data.msg);
+      if (response.status === 200) {
+        navigate('/home'); // Redirect to Home on successful login
+      }
     } catch (err) {
       console.error(err);
       alert('Error logging in');
@@ -98,3 +108,4 @@ const AuthPage = () => {
 };
 
 export default AuthPage;
+
