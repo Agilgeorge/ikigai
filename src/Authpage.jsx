@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -13,7 +12,6 @@ const AuthPage = () => {
     password: ''
   });
 
-  const navigate = useNavigate(); // Hook for navigation
 
   // Function to handle input changes and update form data
   const handleChange = (e) => {
@@ -30,7 +28,7 @@ const AuthPage = () => {
       const response = await axios.post('http://localhost:5000/register', formData);
       alert(response.data.msg);
       if (response.status === 200) {
-        navigate('/home'); // Redirect to Home on successful registration
+        window.location.href("/home")// Redirect to Home on successful registration
       }
     } catch (err) {
       console.error(err);
@@ -43,9 +41,11 @@ const AuthPage = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5000/login', formData);
+
+      console.log(response)
       alert(response.data.msg);
       if (response.status === 200) {
-        navigate('/home'); // Redirect to Home on successful login
+        navigate('/home'); 
       }
     } catch (err) {
       console.error(err);

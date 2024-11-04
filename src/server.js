@@ -52,7 +52,7 @@ app.post('/login', async (req, res) => {
       return res.status(400).json({ msg: 'Invalid credentials' });
     }
 
-    res.json({ msg: 'Logged in successfully' });
+    res.json({ msg: 'Logged in successfully', status: 200 });
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: 'Server error' });
