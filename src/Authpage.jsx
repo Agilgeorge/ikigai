@@ -13,7 +13,6 @@ const AuthPage = () => {
   });
 
 
-  // Function to handle input changes and update form data
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -21,14 +20,13 @@ const AuthPage = () => {
     });
   };
 
-  // Function to handle registration form submission
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5000/register', formData);
       alert(response.data.msg);
       if (response.status === 200) {
-        window.location.href("/home")// Redirect to Home on successful registration
+        window.location.href("/home")
       }
     } catch (err) {
       console.error(err);
@@ -36,7 +34,7 @@ const AuthPage = () => {
     }
   };
 
-  // Function to handle sign-in form submission
+
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -53,7 +51,7 @@ const AuthPage = () => {
     }
   };
 
-  // Toggle functions to switch between sign-up and sign-in
+ 
   const handleRegisterClick = () => setIsActive(true);
   const handleLoginClick = () => setIsActive(false);
 
