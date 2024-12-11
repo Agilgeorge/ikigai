@@ -16,7 +16,9 @@ const AuthPage = () => {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
+      [e.target.email]: e.target.value,
+      [e.target.password]: e.target.value
     });
   };
 
