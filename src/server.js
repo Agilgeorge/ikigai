@@ -2,15 +2,18 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import cors from 'cors';
-import User from './users.js'; 
+import User from './users.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect('mongodb+srv://agilavenger017:<db_password>@ikigai.qokro.mongodb.net/?retryWrites=true&w=majority&appName=ikigai', {
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => console.log('MongoDB connected'))
@@ -18,15 +21,16 @@ mongoose.connect('mongodb+srv://agilavenger017:<db_password>@ikigai.qokro.mongod
 
 app.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
-  console.log(name);
 
   try {
     const userExists = await User.findOne({ email });
     if (userExists) {
-
       return res.status(400).json({ msg: 'User already exists' });
     }
-    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const saltRounds = parseInt(process.env.SALT_ROUNDS) || 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
     const newUser = new User({
       name,
       email,
@@ -34,28 +38,31 @@ app.post('/register', async (req, res) => {
     });
 
     await newUser.save();
-    res.json({ msg: 'User registered successfully' });
+    res.status(200).json({ msg: 'User registered successfully' });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ msg: 'Server error' });
+    console.error('Error in /register route:', error.message);
+    res.status(500).json({ msg: 'An error occurred. Please try again later.' });
   }
 });
+
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
+
   try {
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ msg: 'User not found' });
     }
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ msg: 'Invalid credentials' });
     }
 
-    res.json({ msg: 'Logged in successfully', status: 200 });
+    res.status(200).json({ msg: 'Logged in successfully' });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ msg: 'Server error' });
+    console.error('Error in /login route:', error.message);
+    res.status(500).json({ msg: 'An error occurred. Please try again later.' });
   }
 });
 
